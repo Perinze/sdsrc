@@ -12,7 +12,7 @@ if __name__ == '__main__':
 	port = int(port)
 	qs = qserver.QueueServer(host, port)
 	
-	mon = monitor.Monitor([[1, 1], [4, 6]], [0, 8], [0, 8], 16)
+	mon = monitor.Monitor([[4, 4]], [0, 8], [0, 8], 16)
 
 	mon.draw()
 	try:

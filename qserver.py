@@ -7,6 +7,7 @@ class QueueServer(object):
 	def __init__(self, host, port, tmp_size=1024):
 		self.sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
 		self.sock.bind((host, port))
+		self.sock.setblocking(0)
 		# self.sock.setblocking(False)
 		# self.epoll = select.epoll()
 		# self.epoll.register(self.sock.fileno(), select.EPOLLIN)
@@ -19,12 +20,13 @@ class QueueServer(object):
 		self.delim = r","
 
 	def pop(self):
-		while self.queue.empty():	# is loop safe?
+		if self.queue.empty():	# is loop safe?
 			self.parse()
 		return self.queue.get()
 
 	def parse(self):
 		self.recv()
+		print("non-blocking")
 		while True:
 			match = re.search(self.regex, self.buf)
 			if not match:

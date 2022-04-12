@@ -15,13 +15,16 @@ if __name__ == '__main__':
 	mon = monitor.Monitor([[1, 1], [4, 6]], [0, 8], [0, 8], 16)
 
 	mon.draw()
-	try:
-		while True:
+	while True:
+		try:
 			data = qs.pop()
 			print(data)
 			mon.plot(data)
-	except KeyboardInterrupt:
-		exit(0)
-	except ValueError:
-		pass
+			mon.update()
+		except KeyboardInterrupt:
+			exit(0)
+		except BlockingIOError:
+			pass
+		except ValueError:
+			pass
 	

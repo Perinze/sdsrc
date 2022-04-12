@@ -29,11 +29,11 @@ class Monitor(object):
 			line, = self.ax.plot([x, x], [y, y])
 			self.lines.append(line)
 
-		self.frm_panel = ttk.Frame(master=self.window)
+		self.frm_panel = tk.Frame(master=self.window)
 
-		self.frm_switch = ttk.Frame(master=self.frm_panel)
-		self.lbl_switch = ttk.Label(master=self.frm_switch, text="on")
-		self.btn_switch = ttk.Button(master=self.frm_switch, text="switch")
+		self.frm_switch = tk.Frame(master=self.frm_panel)
+		self.lbl_switch = tk.Label(master=self.frm_switch, text="on")
+		self.btn_switch = tk.Button(master=self.frm_switch, text="switch")
 		self.lbl_switch.grid(row=0, column=0, sticky="ew", padx=5, pady=5)
 		self.btn_switch.grid(row=1, column=0, sticky="ew", padx=5, pady=5)
 

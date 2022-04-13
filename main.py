@@ -1,3 +1,4 @@
+#!/bin/python
 from multiprocessing.sharedctypes import Value
 import monitor
 import qserver

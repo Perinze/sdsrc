@@ -8,7 +8,6 @@ import tkinter.ttk as ttk
 class Monitor(object):
 	def __init__(self, nodes, xlim, ylim, length):
 		self.window = tk.Tk()
-		self.window.attributes('-type', 'dialog')
 
 		self.nodes = nodes
 		self.n = len(nodes)
@@ -19,9 +18,6 @@ class Monitor(object):
 		plt.ion()
 		self.fig, self.ax = plt.subplots(figsize=(8, 8))
 
-		chart = FigureCanvasTkAgg(self.fig, self.window)
-		chart.get_tk_widget().grid(row=0, column=0, sticky="nsw")
-
 		self.ax.set_xlim(xlim)
 		self.ax.set_ylim(ylim)
 		self.lines = []
@@ -29,18 +25,62 @@ class Monitor(object):
 			line, = self.ax.plot([x, x], [y, y])
 			self.lines.append(line)
 
+		self.mode = tk.IntVar()
+		self.mode.set(0)
+		self.init_ui()
+
+		self.switch_status = False
+
+	def init_ui(self):
+		self.window.attributes('-type', 'dialog')
+
+		chart = FigureCanvasTkAgg(self.fig, self.window)
+		chart.get_tk_widget().grid(row=0, column=0, sticky="nsw")
+
 		self.frm_panel = tk.Frame(master=self.window)
 
+		# switch on/off
 		self.frm_switch = tk.Frame(master=self.frm_panel)
 		self.lbl_switch = tk.Label(master=self.frm_switch, text="on")
-		self.btn_switch = tk.Button(master=self.frm_switch, text="switch")
-		self.lbl_switch.grid(row=0, column=0, sticky="ew", padx=5, pady=5)
-		self.btn_switch.grid(row=1, column=0, sticky="ew", padx=5, pady=5)
+		self.btn_switch = tk.Button(master=self.frm_switch, text="switch", command=self.switch)
+		self.lbl_switch.grid(row=0, column=0, sticky="ew", padx=5)
+		self.btn_switch.grid(row=1, column=0, sticky="ew", padx=5)
 
-		self.frm_switch.pack()
+		# switch mode
+		self.frm_mode = tk.Frame(master=self.frm_panel)
+		self.lbl_mode = tk.Label(master=self.frm_mode, text="mode")
+		self.rdo_auto = tk.Radiobutton(master=self.frm_mode, text="auto", variable=self.mode, value=0)
+		self.rdo_manual = tk.Radiobutton(master=self.frm_mode, text="manual", variable=self.mode, value=1)
+		self.rdo_learn = tk.Radiobutton(master=self.frm_mode, text="learn", variable=self.mode, value=2)
+		self.rdo_detect = tk.Radiobutton(master=self.frm_mode, text="detect", variable=self.mode, value=3)
+		self.lbl_mode.grid(row=0, column=0, sticky="ew", padx=5)
+		self.rdo_auto.grid(row=1, column=0, sticky="w", padx=5)
+		self.rdo_manual.grid(row=2, column=0, sticky="w", padx=5)
+		self.rdo_learn.grid(row=3, column=0, sticky="w", padx=5)
+		self.rdo_detect.grid(row=4, column=0, sticky="w", padx=5)
+
+		# history
+		self.frm_history = tk.Frame(master=self.frm_panel)
+		# self.lbl_history = tk.Lable(master=self.frm_history, text="history")
+		self.btn_history = tk.Button(master=self.frm_history, text="history")
+		self.btn_history.grid(row=0, column=0, sticky="ew", padx=5)
+
+		# developer
+		self.frm_develop = tk.Frame(master=self.frm_panel)
+		# self.lbl_history = tk.Lable(master=self.frm_history, text="history")
+		self.btn_develop = tk.Button(master=self.frm_develop, text="develop")
+		self.btn_develop.grid(row=0, column=0, sticky="ew", padx=5)
+
+		self.frm_switch.grid(row=0, column=0, padx=5, pady=5)
+		self.frm_mode.grid(row=1, column=0, padx=5, pady=5)
+		self.frm_history.grid(row=2, column=0, padx=5, pady=5)
+		self.frm_develop.grid(row=3, column=0, padx=5, pady=5)
 		self.frm_panel.grid(row=0, column=1, sticky="new")
 
+
 	def plot(self, angles):
+		if not self.switch_status:
+			return
 		if len(angles) != self.n:
 			raise ValueError("Angle list length incorrect")
 		for i in range(self.n):
@@ -64,3 +104,6 @@ class Monitor(object):
 	
 	def update(self):
 		self.window.update()
+
+	def switch(self):
+		self.switch_status = not self.switch_status

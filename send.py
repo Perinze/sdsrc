@@ -12,5 +12,8 @@ if __name__ == '__main__':
     print(addr)
     s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
     while True:
-        buf = "/" + input() + "\r\n"
-        s.sendto(buf.encode(), addr)
+        try:
+            buf = "/" + input() + "\r\n"
+            s.sendto(buf.encode(), addr)
+        except KeyboardInterrupt:
+            pass

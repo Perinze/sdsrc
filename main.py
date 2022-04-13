@@ -4,6 +4,10 @@ import monitor
 import qserver
 from sys import argv, stderr
 from queue import Empty
+import math
+
+def d2r(d):
+	return d / 180 * math.pi 
 
 if __name__ == '__main__':
 	print(argv)
@@ -23,6 +27,7 @@ if __name__ == '__main__':
 		try:
 			data = qs.pop()
 			if len(data) != 0:
+				data = list(map(d2r, data))
 				print(data)
 				mon.plot(data)
 				print(f"log::loop index {loop_idx}")

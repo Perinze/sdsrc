@@ -3,8 +3,6 @@ import queue
 import re
 import selectors
 
-from numpy import block
-
 class QueueServer(object):
 
 	def __init__(self, host, port, tmp_size=1024):

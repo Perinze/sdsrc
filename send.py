@@ -12,5 +12,5 @@ if __name__ == '__main__':
     print(addr)
     s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
     while True:
-        buf = input()
+        buf = "/" + input() + "\r\n"
         s.sendto(buf.encode(), addr)

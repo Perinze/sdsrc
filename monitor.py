@@ -102,8 +102,6 @@ class Monitor(object):
 		self.fig.canvas.flush_events()
 	
 	def update(self):
-		if not self.switch_status:
-			self.clear()
 		self.window.update()
 
 	def switch(self):

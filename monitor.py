@@ -29,7 +29,7 @@ class Monitor(object):
 		self.mode.set(0)
 		self.init_ui()
 
-		self.switch_status = False
+		self.switch_status = True
 
 	def init_ui(self):
 		self.window.attributes('-type', 'dialog')
@@ -97,13 +97,15 @@ class Monitor(object):
 
 		self.draw()
 			
-
 	def draw(self):
 		self.fig.canvas.draw()
 		self.fig.canvas.flush_events()
 	
 	def update(self):
+		if not self.switch_status:
+			self.clear()
 		self.window.update()
 
 	def switch(self):
 		self.switch_status = not self.switch_status
+		self.lbl_switch['text'] = { True: "on", False: "off"}[self.switch_status]

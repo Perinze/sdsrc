@@ -1,9 +1,13 @@
 import math
+from re import S
 import matplotlib as mpl
 import matplotlib.pyplot as plt
 from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg
 import tkinter as tk
 import tkinter.ttk as ttk
+
+def r2d(r):
+	return round(r / math.pi * 180, 2) % 360
 
 class Monitor(object):
 	def __init__(self, nodes, xlim, ylim, length):
@@ -30,6 +34,8 @@ class Monitor(object):
 		self.init_ui()
 
 		self.switch_status = True
+
+		self.text = self.ax.text(0.5, 0.9, '', fontsize=20, horizontalalignment='center', verticalalignment='center', transform=self.ax.transAxes)
 
 	def init_ui(self):
 		self.window.attributes('-type', 'dialog')
@@ -95,6 +101,7 @@ class Monitor(object):
 
 			self.ax.plot(x, y, marker="o", markersize=4)
 
+			self.text.set_text(f"{r2d(angle)}")
 		self.draw()
 			
 	def draw(self):

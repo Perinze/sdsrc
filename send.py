@@ -3,7 +3,7 @@ import socket
 from sys import argv, stderr
 
 if __name__ == '__main__':
-    addr = ('localhost', 12345)
+    addr = ('localhost', 8234)
     if len(argv) == 3:
         addr = (*argv[1:2], )
     elif len(argv) > 1:
@@ -16,4 +16,4 @@ if __name__ == '__main__':
             buf = "/" + input() + "\r\n"
             s.sendto(buf.encode(), addr)
         except KeyboardInterrupt:
-            pass
+            exit(0)

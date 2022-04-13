@@ -16,7 +16,8 @@ class QueueServer(object):
 		self.TMP_SIZE = tmp_size
 		self.queue = queue.Queue()
 
-		self.regex = r"/([\d\.,]+)\r\n"
+		# self.regex = r"/([\d\.,]+)\r\n"
+		self.regex = r"/([\d\. ]+)\r\n"
 		self.delim = r","
 
 	def pop(self):

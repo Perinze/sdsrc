@@ -1,7 +1,9 @@
+#!/bin/python
 from multiprocessing.sharedctypes import Value
 import monitor
 import qserver
 from sys import argv, stderr
+from queue import Empty
 
 if __name__ == '__main__':
 	print(argv)
@@ -15,13 +17,24 @@ if __name__ == '__main__':
 	mon = monitor.Monitor([[4, 4]], [0, 8], [0, 8], 16)
 
 	mon.draw()
-	try:
-		while True:
+
+	loop_idx = 0
+	while True:
+		try:
 			data = qs.pop()
-			print(data)
-			mon.plot(data)
-	except KeyboardInterrupt:
-		exit(0)
-	except ValueError:
-		pass
+			if len(data) != 0:
+				print(data)
+				mon.plot(data)
+				print(f"log::loop index {loop_idx}")
+			mon.update()
+		except KeyboardInterrupt:
+			exit(0)
+		except BlockingIOError:
+			pass
+		except ValueError:
+			pass
+		except Empty:
+			pass
+
+		loop_idx = (loop_idx + 1) % 114514
 	
